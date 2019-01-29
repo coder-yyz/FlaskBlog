@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<table>
+    <tr valign="top"> #可以更改用户头像的大小
+        <td><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1548673579046&di=65b7bc266fbe70313ac8e1dbba4b7b31&imgtype=0&src=http%3A%2F%2Fpic154.nipic.com%2Ffile%2F20180127%2F14015775_103417035658_2.jpg"
+                width="90" height="90"></td>
+        <td>
+            <h1>用户: {{ user.username }}</h1>
+            {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+            {% if user.last_seen %}<p>最近登录: {{ user.last_seen }}</p>{% endif %}
+            {% if user == current_user %}
+            <p><a href="{{ url_for('edit_profile') }}">个人资料编辑</a></p>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+<hr>
+{% for post in posts %}
+
+{% include '_post.html' %}
+
+{% endfor %}
+{% endblock %}
