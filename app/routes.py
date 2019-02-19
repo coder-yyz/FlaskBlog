@@ -3,13 +3,14 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_wtf import Form
 from app.forms import LoginForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User
+from app.models import User, Post
 from werkzeug.urls import url_parse
 from app import db
-from app.forms import RegistrationForm
+from app.forms import RegistrationForm, PostForm
 from datetime import datetime
 from app.forms import EditProfileForm
 from flask_login import logout_user
+
 # 建立路由，通过路由可以执行其覆盖的方法，可以多个路由指向同一个方法。
 
 
@@ -89,6 +90,21 @@ def user(username):
     posts = [{'author': user, 'body': '测试Post #1号'},
              {'author': user, 'body': '测试Post #2号'}]
     return render_template('user.html', user=user, posts=posts)
+
+
+@app.route('/write', methods=['GET', 'POST'])
+@login_required
+def write():
+    form = PostForm()
+
+    if form.validate_on_submit():
+        post = Post(title=form.title.data,
+                    content=form.content.data, user_id=current_user.id)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post is now live!')
+        return redirect(url_for('index'))
+    return render_template('write.html', form=form)
 
 
 @app.before_request

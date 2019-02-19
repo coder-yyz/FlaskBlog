@@ -39,3 +39,12 @@ class EditProfileForm(FlaskForm):
     username = StringField('用户名', validators=[DataRequired(message='请输入用户名!')])
     about_me = TextAreaField('关于我', validators=[Length(min=0, max=140)])
     submit = SubmitField('提交')
+
+
+class PostForm(FlaskForm):
+    # body = TextAreaField(u'博文', validators=[DataRequired()])
+
+    # submit = SubmitField(u'发表')
+    title = TextAreaField('title', validators=[Length(min=0, max=120)])
+    content = TextAreaField('content', validators=[Length(min=0, max=1200)])
+    submit = SubmitField(u'发表')
